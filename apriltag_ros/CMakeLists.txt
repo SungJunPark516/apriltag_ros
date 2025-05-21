@@ -19,6 +19,9 @@ find_package(OpenCV REQUIRED)
 find_package(Threads REQUIRED)
 find_package(apriltag REQUIRED)
 
+# 추가: apriltag 수동 경로 지정
+include_directories(/usr/local/include)
+link_directories(/usr/local/lib)
 include_directories(include ${EIGEN3_INCLUDE_DIR})
 
 add_executable(tag_detector src/AprilTagNode.cpp)
@@ -37,14 +40,15 @@ set(DEPENDENCIES
     "geometry_msgs"
     "apriltag_msgs"
     "Eigen3"
-    "apriltag"
 )
 
 ament_target_dependencies(AprilTagNode ${DEPENDENCIES})
 ament_target_dependencies(tag_detector ${DEPENDENCIES})
 
-target_link_libraries(AprilTagNode apriltag::apriltag)
-target_link_libraries(tag_detector apriltag::apriltag)
+# target_link_libraries(AprilTagNode apriltag::apriltag)
+# target_link_libraries(tag_detector apriltag::apriltag)
+target_link_libraries(AprilTagNode apriltag)
+target_link_libraries(tag_detector apriltag)
 
 rclcpp_components_register_nodes(AprilTagNode "AprilTagNode")
 
